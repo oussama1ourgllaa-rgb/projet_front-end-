@@ -1,122 +1,121 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useReducer } from "react";
+import {BrowserRouter,Route,Routes} from "react-router-dom";
+import Navbar from "./Components/Navbar";
+import ProductList from "./Pages/ProductList";
+import ProductForm from "./Pages/ProductForm";
+// Liste initiale des produits
+const products = [
+  {
+    id: 1,
+    name: "Laptop HP",
+    price: 7500,
+    category: "Informatique",
+    stock: 10,
+  },
+  {
+    id: 2,
+    name: "iPhone 15",
+    price: 9500,
+    category: "Téléphone",
+    stock: 5,
+  },
+  {
+    id: 3,
+    name: "Casque Sony",
+    price: 1200,
+    category: "Audio",
+    stock: 15,
+  },
+];
+  const initialState = {products:products};
+  // Reducer
+const productReducer = (state, action) => {//action = {type: , payload: }
+  switch (action.type) {
+    // Ajouter un produit
+    case "ADD":
+       console.log(action.payload);
 
-function App() {
-  const [count, setCount] = useState(0)
+      const newState={...state,products:[...state.products,{...action.payload,id:Date.now()}]};
+      console.log('new State: => ',newState);
+      return newState;
+      
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // Modifier un produit
+    case "UPDATE_PRODUCT":
+       let copy=[...state.products];
+      const newProd =copy.map(p=>p.id===action.payload.id?action.payload:p);
+      return {...state,products:newProd};
+     /* return {...state,products: state.products.map((product) => product.id === action.payload.id? action.payload: product)};*/
 
-      <div className="ticks"></div>
+    // Supprimer un produit
+    case "DELETE_PRODUCT":
+      copy=[...state.products];
+      let filtredCopy=copy.filter(p=>p.id!==action.payload);
+      return {...state,products:filtredCopy}
+     /* return {...state,products: state.products.filter(
+        (product) => product.id !== action.payload)};  */
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    default:
+      return state;
+  }
 }
 
-export default App
+const App = () => {
+  // State + dispatch
+  const [state, dispatch] = useReducer( productReducer,initialState);
+
+
+  return (
+    <BrowserRouter>
+      <Navbar />
+
+      
+        <Routes>
+
+          {/* Liste des produits */}
+          <Route
+            path="/"
+            element={
+              <ProductList products={state.products} dispatch={dispatch}
+              />
+            }
+          />
+
+          {/* Liste des produits */}
+          <Route
+            path="/products"
+            element={
+              <ProductList  products={state.products} dispatch={dispatch}
+              />
+            }
+          />
+
+          {/* Ajouter un produit */}
+          <Route
+            path="/products/add"
+            element={
+              <ProductForm
+                products={products}
+                dispatch={dispatch}
+              />
+            }
+          />
+
+          {/* Modifier un produit */}
+          <Route
+            path="/products/edit/:id"
+            element={
+              <ProductForm
+                products={products}
+                dispatch={dispatch}
+              />
+            }
+          />
+
+        </Routes>
+      
+    </BrowserRouter>
+  );
+}
+
+export default App;

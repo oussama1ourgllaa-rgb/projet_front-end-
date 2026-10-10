@@ -11,7 +11,7 @@ const Cart=({productsCart,dispatch})=>{
             <>
                 <table className="table table-striped w-75 mx-auto">
                     <thead>
-                        <tr><th>ID</th><th>Nom</th><th>categorie</th><th>qte</th><th>prix HT</th><th>Actions</th></tr>
+                        <tr><th>ID</th><th>Nom</th><th>categorie</th><th>qte</th><th>prix DH</th><th>Actions</th></tr>
                     </thead>
                     <tbody>
                        {    

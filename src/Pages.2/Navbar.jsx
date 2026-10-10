@@ -4,7 +4,7 @@ const Navbar = ({productsCart}) => {
   return (
     <nav className="navbar bg-dark navbar-dark">
       <div className="container">
-
+      
         <Link className="navbar-brand" to="/">
           My Shop
         </Link>

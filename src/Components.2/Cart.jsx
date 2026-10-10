@@ -1,8 +1,3 @@
-
-
-
-
-
 const Cart=({productsCart,dispatch})=>{
     return (
         <div className="container">

@@ -2,13 +2,14 @@ import { useState,useReducer,useEffect } from 'react'
 import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import axios from 'axios';
 
+
 import ProductList from './Components.2/ProductList';
 import Cart from './Components.2/Cart';
 import Navbar from './Pages.2/Navbar';
 
 import {initialState,CartReducer} from './CartReducer';
 
-function App() {
+function App2() {
   const[produits,setProduits]=useState([]);
 
   useEffect(()=>{
@@ -32,4 +33,4 @@ function App() {
   )
 }
 
-export default App
+export default App2

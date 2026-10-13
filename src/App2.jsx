@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import ProductList from './Components.2/ProductList';
 import Cart from './Components.2/Cart';
-import Navbar from './Pages.2/Navbar';
+import Navbar from './Pages2/Navbar';
 
 import {initialState,CartReducer} from './CartReducer';
 

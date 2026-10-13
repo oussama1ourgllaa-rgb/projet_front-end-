@@ -1,4 +1,4 @@
-import {TaskProvider} from "./Context/TaskContext";
+import {TaskProvider} from "./context/TaskContext";
 import TaskForm from "./Components.3/TaskForm";
 import TaskItem from "./Components.3/TaskItem";
 import TaskList from "./Components.3/TaskList";
